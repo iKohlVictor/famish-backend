@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
 
-const appDataSource = new DataSource({
+const dataSource = new DataSource({
   type: 'mariadb',
   host: 'localhost',
   port: 3306,
@@ -13,4 +13,10 @@ const appDataSource = new DataSource({
   migrations: ['src/migrations/*.ts'],
 });
 
-export default appDataSource;
+dataSource
+  .initialize()
+  .then(() => {
+    console.log('Connected');
+  })
+  .catch((err) => console.log(err));
+export default dataSource;
