@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
 import configuration from './common/configuration/configuration';
-import { UserHttpModule } from './user/user-http.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -14,23 +13,25 @@ import { UserHttpModule } from './user/user-http.module';
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      inject: [ConfigModule],
-      useFactory: (configService: ConfigService) => {
-        return {
+      inject: [ConfigService],
+      useFactory: async (
+        configService: ConfigService,
+      ): Promise<TypeOrmModuleAsyncOptions> => {
+        const options = {
           type: configService.get('database.type'),
           host: configService.get('database.host'),
           port: configService.get('database.port'),
-          username: configService.get('database.user'),
+          username: configService.get('database.username'),
           password: configService.get('database.password'),
-          database: configService.get('database.name'),
+          database: configService.get('database.database'),
           synchronize: configService.get('database.sync'),
           autoLoadEntities: configService.get('database.autoLoadEntities'),
         } as TypeOrmModuleAsyncOptions;
+
+        return options;
       },
     }),
-    UserHttpModule,
+    UserModule,
   ],
 })
-export class AppModule {
-  constructor(private dataSource: DataSource) {}
-}
+export class AppModule {}
