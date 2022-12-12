@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
 import configuration from './common/configuration/configuration';
+import { OrderItemModule } from './modules/orderItem/orderItem.module';
+import { ProductModule } from './modules/product/product.module';
+import { SolicitationModule } from './modules/solicitation/solicitation.module';
 import { UserModule } from './modules/user/user.module';
 
 @Module({
@@ -32,6 +35,9 @@ import { UserModule } from './modules/user/user.module';
       },
     }),
     UserModule,
+    ProductModule,
+    SolicitationModule,
+    OrderItemModule,
   ],
 })
 export class AppModule {}
