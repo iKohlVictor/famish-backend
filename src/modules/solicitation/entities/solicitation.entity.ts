@@ -31,7 +31,16 @@ export class Solicitation {
   })
   typeSolicitation!: TypeSolicitationEnum;
 
-  @Column({ nullable: true, default: null })
+  @Column({
+    nullable: true,
+    type: 'decimal',
+    precision: 14,
+    scale: 4,
+    transformer: {
+      from: (value: string) => Number(value),
+      to: (value: number) => value,
+    },
+  })
   value!: number;
 
   @Column({
