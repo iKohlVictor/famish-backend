@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -22,6 +23,7 @@ export class OrderItem {
   productId!: number;
 
   @OneToOne(() => Product)
+  @JoinColumn({ name: 'productId' })
   product!: Product;
 
   @ManyToOne(() => Solicitation, (solicitation) => solicitation.orderItems)
